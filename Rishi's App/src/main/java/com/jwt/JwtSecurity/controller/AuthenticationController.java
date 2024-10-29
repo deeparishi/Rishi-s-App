@@ -24,9 +24,9 @@ public class AuthenticationController {
         return userService.register(user);
     }
 
-    @PostMapping("/login")
-    public UserTokenResponse login(@RequestBody UserRequest user){
-        return authenticationService.login(user);
+    @PostMapping("/login/{email}")
+    public UserTokenResponse login(@PathVariable String email){
+        return authenticationService.login(email);
     }
 
     @GetMapping("/getToken/{refreshToken}")

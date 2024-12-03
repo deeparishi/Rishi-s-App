@@ -1,12 +1,11 @@
 package com.jwt.JwtSecurity.config;
 
-import com.jwt.JwtSecurity.security.JwtAuthFilter;
-import com.jwt.JwtSecurity.security.JwtService;
-import com.jwt.JwtSecurity.security.UserDetailServiceImpl;
+import com.jwt.JwtSecurity.security.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -30,13 +29,19 @@ public class WebSecurityConfig {
     @Autowired
     UserDetailServiceImpl userDetailService;
 
+    @Autowired
+    CustomAuthenticationEntryPoint authenticationEntryPoint;
+
+    @Autowired
+    CustomAccessDeniedHandler accessDeniedHandler;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests( req ->
                         req.requestMatchers(
-                                "/authenticate-user/**",
+                                        "/authenticate-user/**",
                                         "/v2/api-docs",
                                         "/v3/api-docs",
                                         "/v3/api-docs/**",
@@ -51,6 +56,8 @@ public class WebSecurityConfig {
                                 .permitAll()
                                 .requestMatchers("/demoControl/**").hasAuthority("USER")
                                 .anyRequest().authenticated())
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint)
+                        .accessDeniedHandler(accessDeniedHandler))
                 .userDetailsService(userDetailService)
                 .sessionManagement(session ->  session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -67,4 +74,13 @@ public class WebSecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
+
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.time.Instant;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -23,18 +24,21 @@ public class JwtService {
     @Value("${my.app.refreshExpirationMs}")
     Integer refreshExpirationMs;
 
-    public String generateAccessToken(String username){
+    @Value("${my.app.resetTokenExpirationMs}")
+    Integer resetTokenExpirationMs;
+
+    public String generateAccessToken(String email){
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(email)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(getSignInKey())
                 .compact();
     }
 
-    public String generateRefreshToken(String username){
+    public String generateRefreshToken(String email){
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(email)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + refreshExpirationMs))
                 .signWith(getSignInKey())
@@ -46,7 +50,7 @@ public class JwtService {
         return username.equals(email) && !isTokenExpired(token);
     }
 
-    private Boolean isTokenExpired(String token) {
+    public Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
@@ -73,5 +77,14 @@ public class JwtService {
 
     private Key getSignInKey() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
+    }
+
+    public String generateJWTTokenForResetPassword(String email) {
+        return Jwts.builder()
+                .setSubject(email)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + resetTokenExpirationMs))
+                .signWith(getSignInKey())
+                .compact();
     }
 }

@@ -58,6 +58,7 @@ public class ImpersonateController {
 
         SecurityContextHolder.getContext().setAuthentication(impersonatedAuth);
 
+        log.info("Impersonated is - {} ", userToImpersonate.getUsername());
         return ResponseEntity.ok("Impersonating user: " + userToImpersonate.getUsername());
     }
 
@@ -67,10 +68,9 @@ public class ImpersonateController {
         if (ImpersonationContext.getOriginalAuthentication() != null) {
             Authentication originalAuth = ImpersonationContext.getOriginalAuthentication();
             SecurityContextHolder.getContext().setAuthentication(originalAuth);
-            ImpersonationContext.clear(); // Clear the stored original authentication
+            ImpersonationContext.clear();
         }
 
-        // Perform actual logout
         SecurityContextHolder.clearContext();
 
         // Redirect to admin page

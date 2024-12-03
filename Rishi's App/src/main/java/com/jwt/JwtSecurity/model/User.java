@@ -1,5 +1,6 @@
 package com.jwt.JwtSecurity.model;
 
+import com.jwt.JwtSecurity.config.audit.AuditorEntity;
 import com.jwt.JwtSecurity.enums.Role;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -14,7 +15,7 @@ import java.util.List;
 @Table(name = "user")
 @Entity
 @Data
-public class User implements UserDetails {
+public class User  implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,11 +62,11 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return username;
     }
 }

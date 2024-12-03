@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Builder
 @Data
 @AllArgsConstructor
@@ -14,5 +16,7 @@ public class UserTokenResponse {
     String accessToken;
 
     String refreshToken;
+
+    private List<String> roles;
 
 }

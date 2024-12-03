@@ -18,7 +18,7 @@ public class UserSignUpRequest {
     @NotBlank
     String username;
 
-//    @ValidatePassword
+    @ValidatePassword
     String password;
 
     @Email

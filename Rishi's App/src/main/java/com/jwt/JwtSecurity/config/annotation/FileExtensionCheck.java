@@ -18,7 +18,7 @@ public @interface FileExtensionCheck {
 
     boolean isMandatory();
 
-        Class<?>[] groups() default {};
+    Class<?>[] groups() default {};
 
-        Class<? extends Payload>[] payload() default {};
+    Class<? extends Payload>[] payload() default {};
 }

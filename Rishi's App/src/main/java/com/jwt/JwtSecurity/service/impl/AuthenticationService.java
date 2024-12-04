@@ -82,7 +82,7 @@ public class AuthenticationService {
         try {
 
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                    new UsernamePasswordAuthenticationToken(userDetails, loginRequest.getPassword(), userDetails.getAuthorities());
+                    new UsernamePasswordAuthenticationToken(userDetails.getEmail(), loginRequest.getPassword(), userDetails.getAuthorities());
 
             authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 

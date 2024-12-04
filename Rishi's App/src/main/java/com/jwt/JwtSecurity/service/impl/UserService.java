@@ -164,7 +164,7 @@ public class UserService {
 
     private String generateLoginId(){
         Long id = userRepo.findRecentId();
-        return id == null ? "USER".concat(String.valueOf(0)): "USER".concat(String.valueOf(id));
+        return id == null ? "USER ".concat(String.valueOf(0)): "USER ".concat(String.valueOf(id));
     }
 
 

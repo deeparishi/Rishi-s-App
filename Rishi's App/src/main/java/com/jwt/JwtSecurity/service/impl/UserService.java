@@ -18,6 +18,8 @@ import com.jwt.JwtSecurity.repository.UserRepo;
 import com.jwt.JwtSecurity.repository.UserSkillRepo;
 import com.jwt.JwtSecurity.security.JwtService;
 import com.jwt.JwtSecurity.utils.AppMessages;
+import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class UserService {
 
     @Autowired
@@ -85,7 +88,7 @@ public class UserService {
         return userAddressRepo.save(userAddressBuilder);
     }
 
-    public UserDetailsResponse userDetails(Long id){
+    public UserDetailsResponse userDetails(Long id) {
 
         User user = userRepo.findById(id).orElseThrow(() -> new NotFoundException(AppMessages.USER_NOT_FOUND));
         List<UserSkillRecord> skills = new ArrayList<>(mapSkillsToUser(user.getUserSkills()));
@@ -101,7 +104,7 @@ public class UserService {
                 .build();
     }
 
-    public UserAddressResponse mapAddress(UserAddress userAddress){
+    public UserAddressResponse mapAddress(UserAddress userAddress) {
         return UserAddressResponse.builder()
                 .zipCode(userAddress.getZipCode())
                 .streetName(userAddress.getStreetName())
@@ -109,7 +112,7 @@ public class UserService {
                 .build();
     }
 
-    public UserDetailsResponse addPostsToUser(List<String> userPosts, Long id){
+    public UserDetailsResponse addPostsToUser(List<String> userPosts, Long id) {
 
         User user = userRepo.findById(id).orElseThrow(() -> new NotFoundException(AppMessages.USER_NOT_FOUND));
 
@@ -162,10 +165,49 @@ public class UserService {
         return records;
     }
 
-    private String generateLoginId(){
+    private String generateLoginId() {
         Long id = userRepo.findRecentId();
-        return id == null ? "USER ".concat(String.valueOf(0)): "USER ".concat(String.valueOf(id));
+        return id == null ? "USER ".concat(String.valueOf(0)) : "USER ".concat(String.valueOf(id));
     }
 
+    public UserDetailsResponse mapUserToResponse(User user) {
+
+        List<UserSkillRecord> skills = new ArrayList<>(mapSkillsToUser(user.getUserSkills()));
+        List<UserPostsRecord> posts = new ArrayList<>(mapPostsToUser(user.getUserPosts()));
+
+        return UserDetailsResponse.builder()
+                .email(user.getEmail())
+                .role(user.getRole())
+                .loginId(user.getLoginId())
+                .userAddress(mapAddress(user.getUserAddress()))
+                .userPosts(posts)
+                .userSkills(skills)
+                .build();
+    }
+
+    public UserDetailsResponse findByLoginId(String loginId) {
+
+        return userRepo.findByLoginId(loginId)
+                .map(user -> {
+                    List<UserSkillRecord> skills = new ArrayList<>(mapSkillsToUser(user.getUserSkills()));
+                    List<UserPostsRecord> posts = new ArrayList<>(mapPostsToUser(user.getUserPosts()));
+                    return UserDetailsResponse.builder()
+                            .email(user.getEmail())
+                            .role(user.getRole())
+                            .loginId(user.getLoginId())
+                            .userAddress(mapAddress(user.getUserAddress()))
+                            .userPosts(posts)
+                            .userSkills(skills)
+                            .build();
+                })
+                .orElseThrow(() -> new NotFoundException(AppMessages.USER_NOT_FOUND));
+    }
+
+    @Transactional
+    public List<User> findAll() {
+        log.info("---Fetching From User Database---");
+        return userRepo.findAll();
+
+    }
 
 }

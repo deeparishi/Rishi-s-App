@@ -27,20 +27,20 @@ public class AuthenticationController {
     AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public ResponseEntity<GenericResponse<UserTokenResponse>> register(@Valid @RequestBody UserSignUpRequest user){
+    public ResponseEntity<GenericResponse<UserTokenResponse>> register(@Valid @RequestBody UserSignUpRequest user) {
         UserTokenResponse response = userService.register(user);
         return ResponseEntity.ok(GenericResponse.success(AppMessages.SUCCESS_MESSAGE, response));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<GenericResponse<UserTokenResponse>> login(@RequestBody UserSignInRequest signInRequest){
-        UserTokenResponse response =  authenticationService.login(signInRequest);
+    public ResponseEntity<GenericResponse<UserTokenResponse>> login(@RequestBody UserSignInRequest signInRequest) {
+        UserTokenResponse response = authenticationService.login(signInRequest);
         return ResponseEntity.ok(GenericResponse.success(AppMessages.SUCCESS_MESSAGE, response));
     }
 
     @GetMapping("/getToken/{refreshToken}")
-    public ResponseEntity<GenericResponse<UserTokenResponse>> getToken(@PathVariable("refreshToken") String refreshToken){
-        UserTokenResponse response =  authenticationService.getAccessToken(refreshToken);
+    public ResponseEntity<GenericResponse<UserTokenResponse>> getToken(@PathVariable("refreshToken") String refreshToken) {
+        UserTokenResponse response = authenticationService.getAccessToken(refreshToken);
         return ResponseEntity.ok(GenericResponse.success(AppMessages.SUCCESS_MESSAGE, response));
     }
 

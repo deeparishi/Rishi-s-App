@@ -1,10 +1,13 @@
 package com.jwt.JwtSecurity.security;
 
+import com.jwt.JwtSecurity.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -86,5 +89,11 @@ public class JwtService {
                 .setExpiration(new Date(System.currentTimeMillis() + resetTokenExpirationMs))
                 .signWith(getSignInKey())
                 .compact();
+    }
+
+    public String extractEmailFromToken(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User userDetails = (User) authentication.getPrincipal();
+        return userDetails.getEmail();
     }
 }

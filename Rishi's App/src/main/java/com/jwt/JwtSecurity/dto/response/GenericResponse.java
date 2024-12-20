@@ -26,6 +26,10 @@ public class GenericResponse<T> {
 
     private T data;
 
+    private List<T> dataa;
+
+    private String statusCode;
+
     public static <T> GenericResponse<T> success(T data) {
 
         return GenericResponse.<T>builder()
@@ -46,6 +50,19 @@ public class GenericResponse<T> {
                 .build();
     }
 
+    public static <T> GenericResponse<T> success(String message, List<T> data) {
+
+        return GenericResponse.<T>builder()
+                .message(message)
+                .dataa(data)
+                .errorType("NONE")
+                .status(true)
+                .build();
+    }
+
+
+
+
     public static <T> GenericResponse<T> error(String errorType, String message) {
         return GenericResponse.<T>builder()
                 .message(message)
@@ -57,6 +74,15 @@ public class GenericResponse<T> {
     public static <T> GenericResponse<T> error(String errorType, List<String> message) {
         return GenericResponse.<T>builder()
                 .messages(message)
+                .errorType(errorType)
+                .status(false)
+                .build();
+    }
+
+    public static <T> GenericResponse<T> error(String statusCode, String errorType, String message) {
+        return GenericResponse.<T>builder()
+                .statusCode(statusCode)
+                .message(message)
                 .errorType(errorType)
                 .status(false)
                 .build();

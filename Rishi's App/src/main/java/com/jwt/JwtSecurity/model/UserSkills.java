@@ -1,5 +1,7 @@
 package com.jwt.JwtSecurity.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
@@ -22,7 +24,7 @@ public class UserSkills {
     String skill;
 
     @ManyToMany(mappedBy = "userSkills")
-    @ToString.Exclude
+    @JsonBackReference(value = "user-skills-reference")
     List<User> user;
 
 }

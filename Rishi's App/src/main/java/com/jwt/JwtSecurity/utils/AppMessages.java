@@ -15,4 +15,10 @@ public class AppMessages {
     public static final String PASSWORD_RESET_LINK_EXPIRED = "Reset Link Expired! Please try again";
 
     public static final String PASSWORD_CHANGED = "Password Changed Successfully";
+
+    public static final String CATEGORY_NOT_FOUND = "Category not found! Please Contact Admin";
+
+    public static final String TASK_NOT_FOUND = "Task not found! Please add it";
+
+    public static final String LIMIT_EXCEEDED = "Reached More Limit, Try again later!!";
 }

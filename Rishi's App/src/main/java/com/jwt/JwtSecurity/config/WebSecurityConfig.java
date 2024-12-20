@@ -1,5 +1,6 @@
 package com.jwt.JwtSecurity.config;
 
+import com.jwt.JwtSecurity.enums.Role;
 import com.jwt.JwtSecurity.security.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.util.List;
 
 @EnableWebSecurity
 @Configuration
@@ -35,26 +38,26 @@ public class WebSecurityConfig {
     @Autowired
     CustomAccessDeniedHandler accessDeniedHandler;
 
+    private final List<String> WHITELISTED_ENDPOINTS = List.of("/authenticate-user/**",
+            "/v2/api-docs",
+            "/v3/api-docs",
+            "/v3/api-docs/**",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "swagger-ui/**",
+            "/webjars/**",
+            "/swagger-ui.html");
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests( req ->
-                        req.requestMatchers(
-                                        "/authenticate-user/**",
-                                        "/v2/api-docs",
-                                        "/v3/api-docs",
-                                        "/v3/api-docs/**",
-                                        "/swagger-resources",
-                                        "/swagger-resources/**",
-                                        "/configuration/ui",
-                                        "/configuration/security",
-                                        "swagger-ui/**",
-                                        "/webjars/**",
-                                        "/swagger-ui.html"
-                                )
+                                req.requestMatchers(WHITELISTED_ENDPOINTS.toArray(String[]::new))
                                 .permitAll()
-                                .requestMatchers("/demoControl/**").hasAuthority("USER")
+                                .requestMatchers("/demoControl/**").hasAuthority(Role.USER.name())
                                 .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint)
                         .accessDeniedHandler(accessDeniedHandler))

@@ -1,6 +1,7 @@
 package com.jwt.JwtSecurity.exception;
 
 import com.jwt.JwtSecurity.dto.response.GenericResponse;
+import com.jwt.JwtSecurity.utils.AppMessages;
 import com.jwt.JwtSecurity.utils.ErrorCodes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -67,5 +68,11 @@ public class ErrorHandler {
     public ResponseEntity<GenericResponse<Object>> handleBadCredentialException(BadCredentialsException exception){
         GenericResponse<Object> response = GenericResponse.error(HttpStatus.UNAUTHORIZED.getReasonPhrase(), exception.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+
+    @ExceptionHandler(LimitReachedException.class)
+    public ResponseEntity<GenericResponse<Object>> handleLimitReachedException(LimitReachedException exception){
+        GenericResponse<Object> response = GenericResponse.error(HttpStatus.TOO_MANY_REQUESTS.getReasonPhrase(), AppMessages.LIMIT_EXCEEDED);
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(response);
     }
 }

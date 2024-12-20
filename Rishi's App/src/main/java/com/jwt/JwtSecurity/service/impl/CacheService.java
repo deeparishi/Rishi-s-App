@@ -1,15 +1,11 @@
 package com.jwt.JwtSecurity.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import com.jwt.JwtSecurity.dto.response.UserDetailsResponse;
-import com.jwt.JwtSecurity.model.User;
 import com.jwt.JwtSecurity.service.iservice.ICacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,7 +13,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import static com.jwt.JwtSecurity.utils.AppMessages.USER_NOT_FOUND;
 
 @Service
 public class CacheService <T> implements ICacheService<T> {

@@ -1,10 +1,12 @@
 package com.jwt.JwtSecurity.service.impl;
 
 import com.jwt.JwtSecurity.enums.FileType;
+import com.jwt.JwtSecurity.exception.NotFoundException;
 import com.jwt.JwtSecurity.model.FileManager;
 import com.jwt.JwtSecurity.repository.FileManagerRepo;
 import com.jwt.JwtSecurity.service.iservice.FileService;
 import com.jwt.JwtSecurity.service.iservice.IFilePathService;
+import com.jwt.JwtSecurity.utils.AppMessages;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +49,8 @@ public class FileServiceImpl implements FileService {
     @Override
     public String uploadFile(MultipartFile files, FileType fileType) throws IOException {
 
+        log.info("Uploading the file");
+
         FileManager entity = new FileManager();
 
         String filename = System.currentTimeMillis() + "-" + files.getOriginalFilename();
@@ -56,7 +60,7 @@ public class FileServiceImpl implements FileService {
         destinationFile = location.resolve(Paths.get(filename)).normalize().toAbsolutePath();
 
         if (!destinationFile.getParent().equals(location.toAbsolutePath()))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "error.badFilePath");
+            throw new NotFoundException("File Path Not Found. Contact Administrator");
 
 
         try (InputStream inputStream = files.getInputStream()) {
@@ -77,7 +81,7 @@ public class FileServiceImpl implements FileService {
         if (resource.exists() || resource.isReadable())
             return resource;
         else
-            throw new RuntimeException("Not Found " + filename);
+            throw new NotFoundException(filename + AppMessages.FILE_NOT_FOUND);
     }
 
     @Override
@@ -105,7 +109,7 @@ public class FileServiceImpl implements FileService {
                         log.info("Path {} ", path.getDestinationPath());
                         Files.createDirectories(path.getDestinationPath());
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        throw new NotFoundException("File Path Not Found. Contact Administrator");
                     }
                 });
     }

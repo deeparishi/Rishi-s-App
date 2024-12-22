@@ -22,21 +22,18 @@ public class TaskManagerController {
     @Autowired
     ITaskService taskService;
 
-    //Done
     @PostMapping("/create-task")
     public ResponseEntity<GenericResponse<TaskCacheDto>> createTasks(@RequestBody TaskRequest taskRequest) {
         TaskCacheDto response = taskService.createTask(taskRequest);
         return ResponseEntity.ok(GenericResponse.success(AppMessages.SUCCESS_MESSAGE, response));
     }
 
-    //Done
     @GetMapping("/get-tasks/{id}")
     public ResponseEntity<GenericResponse<TaskCacheDto>> getTasks(@PathVariable Long id) throws JsonProcessingException {
         List<TaskCacheDto> response = taskService.getTasksByUser(id);
         return ResponseEntity.ok(GenericResponse.success(AppMessages.SUCCESS_MESSAGE, response));
     }
 
-    //Done
     @GetMapping("/get-tasks-by-status/{taskStatus}")
     public ResponseEntity<GenericResponse<TaskCacheDto>> getTasksByStatus(@PathVariable TaskStatus taskStatus) throws JsonProcessingException {
         List<TaskCacheDto> response = taskService.getTasksByStatus(taskStatus);
@@ -49,21 +46,18 @@ public class TaskManagerController {
         return ResponseEntity.ok(GenericResponse.success(AppMessages.SUCCESS_MESSAGE, response));
     }
 
-    //Done
     @PutMapping("/update-tasks/{taskId}")
     public ResponseEntity<GenericResponse<TaskCacheDto>> updateTask(@PathVariable Long taskId, @RequestBody TaskRequest taskRequest) throws JsonProcessingException {
         TaskCacheDto response = taskService.updateTask(taskId, taskRequest);
         return ResponseEntity.ok(GenericResponse.success(AppMessages.SUCCESS_MESSAGE, response));
     }
 
-    //Done
     @DeleteMapping("delete-task/{taskId}")
     public ResponseEntity<GenericResponse<String>> deleteTask(@PathVariable Long taskId) throws JsonProcessingException {
         String response = taskService.deleteTask(taskId);
         return ResponseEntity.ok(GenericResponse.success(AppMessages.SUCCESS_MESSAGE, response));
     }
 
-    //Done
     @GetMapping("/add-tasks-to-cache")
     public void addCacheToRedis(){
         taskService.addTasksToCache();

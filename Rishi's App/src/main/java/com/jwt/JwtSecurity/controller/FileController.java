@@ -1,8 +1,11 @@
 package com.jwt.JwtSecurity.controller;
 
 import com.jwt.JwtSecurity.config.annotation.FileExtensionCheck;
+import com.jwt.JwtSecurity.dto.response.GenericResponse;
 import com.jwt.JwtSecurity.enums.FileType;
+import com.jwt.JwtSecurity.exception.NotFoundException;
 import com.jwt.JwtSecurity.service.iservice.FileService;
+import com.jwt.JwtSecurity.utils.AppMessages;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +27,10 @@ public class FileController {
     FileService fileService;
 
     @PostMapping(value = "/file-upload/{fileType}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public String addFile(@Valid @FileExtensionCheck(ext = "application/pdf, png", isMandatory = true, message = "Invalid format") MultipartFile file,
+    public ResponseEntity<GenericResponse<String>> addFile(@Valid @FileExtensionCheck(ext = "application/pdf, png", isMandatory = true, message = "Invalid format") MultipartFile file,
                           FileType fileType) throws IOException {
-        log.info("Uploading the file");
-        return fileService.uploadFile(file, fileType);
+        String res =fileService.uploadFile(file, fileType);
+        return ResponseEntity.ok(GenericResponse.success(AppMessages.SUCCESS_MESSAGE, res));
     }
 
     @GetMapping(value = "/file-download")
@@ -36,7 +39,7 @@ public class FileController {
         Resource file = fileService.downloadFile(fileName, fileType);
 
         if (file == null)
-            throw new RuntimeException("FIle not found " + fileName);
+            throw new NotFoundException(fileName + AppMessages.FILE_NOT_FOUND);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
@@ -44,8 +47,8 @@ public class FileController {
     }
 
     @DeleteMapping("/delete-file")
-    public String deleteFile(@RequestParam String fileName, @RequestParam FileType fileType) throws IOException {
+    public ResponseEntity<GenericResponse<String>> deleteFile(@RequestParam String fileName, @RequestParam FileType fileType) throws IOException {
         fileService.deleteFile(fileName, fileType);
-        return "Deleted Successfully!!!!";
+        return ResponseEntity.ok(GenericResponse.success(AppMessages.SUCCESS_MESSAGE, "File Deleted Successfully"));
     }
 }

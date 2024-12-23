@@ -7,16 +7,19 @@ import com.jwt.JwtSecurity.dto.request.UserSkillsRequest;
 import com.jwt.JwtSecurity.dto.response.UserAddressResponse;
 import com.jwt.JwtSecurity.dto.response.UserDetailsResponse;
 import com.jwt.JwtSecurity.dto.response.UserTokenResponse;
+import com.jwt.JwtSecurity.enums.Enums;
 import com.jwt.JwtSecurity.exception.NotFoundException;
-import com.jwt.JwtSecurity.model.User;
-import com.jwt.JwtSecurity.model.UserAddress;
-import com.jwt.JwtSecurity.model.UserPosts;
-import com.jwt.JwtSecurity.model.UserSkills;
+import com.jwt.JwtSecurity.model.role.Role;
+import com.jwt.JwtSecurity.model.user.User;
+import com.jwt.JwtSecurity.model.user.UserAddress;
+import com.jwt.JwtSecurity.model.user.UserPosts;
+import com.jwt.JwtSecurity.model.user.UserSkills;
 import com.jwt.JwtSecurity.repository.UserAddressRepo;
 import com.jwt.JwtSecurity.repository.UserPostsRepo;
 import com.jwt.JwtSecurity.repository.UserRepo;
 import com.jwt.JwtSecurity.repository.UserSkillRepo;
 import com.jwt.JwtSecurity.security.JwtService;
+import com.jwt.JwtSecurity.service.iservice.IRoleService;
 import com.jwt.JwtSecurity.utils.AppMessages;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +55,9 @@ public class UserService {
     @Autowired
     UserSkillRepo userSkillRepo;
 
+    @Autowired
+    IRoleService roleService;
+
 
     public UserTokenResponse register(UserSignUpRequest users) {
 
@@ -59,16 +65,21 @@ public class UserService {
         user.setUsername(users.getUsername());
         user.setEmail(users.getEmail());
         user.setPassword(passwordEncoder.encode(users.getPassword()));
-        user.setRole(user.getRole());
         user.setLoginId(generateLoginId());
         UserAddress userAddress = mapUserAddress(users.getAddressDto(), user);
         user.setUserAddress(userAddress);
+        user.setProvider(Enums.AuthProvider.LOCAL);
+        user.setProviderId("LOCAL");
+        user.setEmailVerified(false);
+        List<Role> roles = new ArrayList<>();
+        roles.add(roleService.getRoleByName(Enums.Role.USER));
+        roleService.giveRolesToUser(user, roles);
         userRepo.save(user);
         return getUserTokenResponse(user);
     }
 
     private UserTokenResponse getUserTokenResponse(User user) {
-        String accessToken = jwtService.generateAccessToken(user.getEmail());
+        String accessToken = jwtService.generateAccessToken(user.getEmail(), user.getAuthorities());
         String refreshToken = authenticationService.generateRefreshToken(user);
 
         return UserTokenResponse.builder()
@@ -96,7 +107,7 @@ public class UserService {
 
         return UserDetailsResponse.builder()
                 .email(user.getEmail())
-                .role(user.getRole())
+//                .role(user.getRole())
                 .loginId(user.getLoginId())
                 .userAddress(mapAddress(user.getUserAddress()))
                 .userPosts(posts)
@@ -165,7 +176,7 @@ public class UserService {
         return records;
     }
 
-    private String generateLoginId() {
+    public String generateLoginId() {
         Long id = userRepo.findRecentId();
         return id == null ? "USER ".concat(String.valueOf(0)) : "USER ".concat(String.valueOf(id));
     }
@@ -177,7 +188,7 @@ public class UserService {
 
         return UserDetailsResponse.builder()
                 .email(user.getEmail())
-                .role(user.getRole())
+//                .role(user.getRole())
                 .loginId(user.getLoginId())
                 .userAddress(mapAddress(user.getUserAddress()))
                 .userPosts(posts)
@@ -193,7 +204,7 @@ public class UserService {
                     List<UserPostsRecord> posts = new ArrayList<>(mapPostsToUser(user.getUserPosts()));
                     return UserDetailsResponse.builder()
                             .email(user.getEmail())
-                            .role(user.getRole())
+//                            .role(user.getRole())
                             .loginId(user.getLoginId())
                             .userAddress(mapAddress(user.getUserAddress()))
                             .userPosts(posts)

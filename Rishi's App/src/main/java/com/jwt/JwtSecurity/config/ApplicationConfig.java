@@ -1,9 +1,5 @@
 package com.jwt.JwtSecurity.config;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.jwt.JwtSecurity.config.audit.AuditorWareImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

@@ -1,4 +1,4 @@
-package com.jwt.JwtSecurity.model;
+package com.jwt.JwtSecurity.model.task;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;

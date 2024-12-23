@@ -1,6 +1,6 @@
 package com.jwt.JwtSecurity.config.audit;
 
-import com.jwt.JwtSecurity.model.User;
+import com.jwt.JwtSecurity.model.user.User;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

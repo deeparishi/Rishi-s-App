@@ -4,13 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.jwt.JwtSecurity.dto.record.TaskCacheDto;
 import com.jwt.JwtSecurity.dto.request.TaskRequest;
 import com.jwt.JwtSecurity.dto.response.GenericResponse;
-import com.jwt.JwtSecurity.dto.response.TaskResponse;
 import com.jwt.JwtSecurity.enums.TaskStatus;
 import com.jwt.JwtSecurity.service.iservice.ITaskService;
 import com.jwt.JwtSecurity.utils.AppMessages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

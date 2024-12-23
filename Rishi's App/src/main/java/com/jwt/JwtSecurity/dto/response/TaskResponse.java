@@ -3,8 +3,8 @@ package com.jwt.JwtSecurity.dto.response;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jwt.JwtSecurity.enums.TaskPriority;
 import com.jwt.JwtSecurity.enums.TaskStatus;
-import com.jwt.JwtSecurity.model.Category;
-import com.jwt.JwtSecurity.model.User;
+import com.jwt.JwtSecurity.model.task.Category;
+import com.jwt.JwtSecurity.model.user.User;
 import lombok.*;
 
 import java.time.LocalDateTime;

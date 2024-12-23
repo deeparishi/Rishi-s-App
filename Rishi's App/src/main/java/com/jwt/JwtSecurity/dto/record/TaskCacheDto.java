@@ -2,8 +2,6 @@ package com.jwt.JwtSecurity.dto.record;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @AllArgsConstructor

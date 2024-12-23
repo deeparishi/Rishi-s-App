@@ -1,5 +1,6 @@
 package com.jwt.JwtSecurity.model;
 
+import com.jwt.JwtSecurity.model.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

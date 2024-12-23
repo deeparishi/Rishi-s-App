@@ -5,12 +5,9 @@ import com.jwt.JwtSecurity.dto.response.GenericResponse;
 import com.jwt.JwtSecurity.dto.response.UserDetailsResponse;
 import com.jwt.JwtSecurity.service.impl.UserService;
 import com.jwt.JwtSecurity.utils.AppMessages;
-import com.jwt.JwtSecurity.utils.ErrorCodes;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.jwt.JwtSecurity.config.intializer;
+package com.jwt.JwtSecurity.intializer;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;

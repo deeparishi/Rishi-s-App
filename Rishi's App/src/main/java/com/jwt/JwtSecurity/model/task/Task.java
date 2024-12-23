@@ -1,8 +1,9 @@
-package com.jwt.JwtSecurity.model;
+package com.jwt.JwtSecurity.model.task;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.jwt.JwtSecurity.enums.TaskPriority;
 import com.jwt.JwtSecurity.enums.TaskStatus;
+import com.jwt.JwtSecurity.model.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package com.jwt.JwtSecurity.security;
+package com.jwt.JwtSecurity.security.entrypoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jwt.JwtSecurity.dto.response.GenericResponse;
@@ -20,7 +20,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
 
         GenericResponse<Object> re = new GenericResponse<>();
-        re.setMessage("Unauthorized detected");
+        re.setMessage(authException.getMessage());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         OutputStream stream = response.getOutputStream();

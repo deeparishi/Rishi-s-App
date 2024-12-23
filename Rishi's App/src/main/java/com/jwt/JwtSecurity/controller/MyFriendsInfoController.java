@@ -5,7 +5,6 @@ import com.jwt.JwtSecurity.config.annotation.RequestRateLimiter;
 import com.jwt.JwtSecurity.dto.request.FriendRequest;
 import com.jwt.JwtSecurity.dto.response.FriendResponse;
 import com.jwt.JwtSecurity.dto.response.GenericResponse;
-import com.jwt.JwtSecurity.exception.LimitReachedException;
 import com.jwt.JwtSecurity.service.RateLimiterService;
 import com.jwt.JwtSecurity.service.iservice.IFriendService;
 import com.jwt.JwtSecurity.utils.AppMessages;

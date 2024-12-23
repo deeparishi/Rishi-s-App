@@ -1,7 +1,6 @@
 package com.jwt.JwtSecurity.config.annotation;
 
 import com.jwt.JwtSecurity.utils.CacheConstants;
-import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
 import java.lang.annotation.*;

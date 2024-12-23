@@ -6,11 +6,10 @@ import com.jwt.JwtSecurity.dto.response.UserTokenResponse;
 import com.jwt.JwtSecurity.exception.NotFoundException;
 import com.jwt.JwtSecurity.exception.RefreshTokenExpiredException;
 import com.jwt.JwtSecurity.model.RefreshToken;
-import com.jwt.JwtSecurity.model.User;
+import com.jwt.JwtSecurity.model.user.User;
 import com.jwt.JwtSecurity.repository.RefreshTokenRepository;
 import com.jwt.JwtSecurity.repository.UserRepo;
 import com.jwt.JwtSecurity.security.JwtService;
-import com.jwt.JwtSecurity.security.UserDetailServiceImpl;
 import com.jwt.JwtSecurity.utils.AppMessages;
 import jakarta.mail.MessagingException;
 import lombok.extern.slf4j.Slf4j;
@@ -93,7 +92,7 @@ public class AuthenticationService {
             throw new BadCredentialsException("Incorrect Password");
         }
 
-        String accessToken = jwtService.generateAccessToken(userDetails.getEmail());
+        String accessToken = jwtService.generateAccessToken(userDetails.getEmail(), userDetails.getAuthorities());
         String refreshToken = generateRefreshToken(userDetails);
 
         List<String> roles = userDetails.getAuthorities().stream()
@@ -112,7 +111,7 @@ public class AuthenticationService {
         RefreshToken refreshToken1 = verifyRefreshTokenExpiration(getToken
                 .orElseThrow(() -> new NotFoundException(AppMessages.REFRESH_NOT_FOUND)));
         User user = userRepo.findById(getToken.get().getUser().getId()).orElseThrow();
-        String accessToken = jwtService.generateAccessToken(user.getEmail());
+        String accessToken = jwtService.generateAccessToken(user.getEmail(), user.getAuthorities());
         return UserTokenResponse.builder().accessToken(accessToken).refreshToken(refreshToken1.getToken()).build();
 
     }

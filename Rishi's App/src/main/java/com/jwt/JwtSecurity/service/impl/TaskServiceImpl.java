@@ -10,7 +10,7 @@ import com.jwt.JwtSecurity.dto.record.TaskCacheDto;
 import com.jwt.JwtSecurity.dto.request.TaskRequest;
 import com.jwt.JwtSecurity.enums.TaskStatus;
 import com.jwt.JwtSecurity.exception.NotFoundException;
-import com.jwt.JwtSecurity.model.Task;
+import com.jwt.JwtSecurity.model.task.Task;
 import com.jwt.JwtSecurity.repository.CategoryRepo;
 import com.jwt.JwtSecurity.repository.TaskRepo;
 import com.jwt.JwtSecurity.repository.UserRepo;
@@ -25,13 +25,14 @@ import org.springframework.stereotype.Service;
 import redis.clients.jedis.UnifiedJedis;
 import redis.clients.jedis.exceptions.JedisDataException;
 import redis.clients.jedis.json.Path2;
-import redis.clients.jedis.search.*;
-
+import redis.clients.jedis.search.FieldName;
+import redis.clients.jedis.search.IndexDefinition;
+import redis.clients.jedis.search.IndexOptions;
+import redis.clients.jedis.search.Schema;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service

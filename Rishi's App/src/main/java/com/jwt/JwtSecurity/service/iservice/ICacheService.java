@@ -1,8 +1,6 @@
 package com.jwt.JwtSecurity.service.iservice;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.jwt.JwtSecurity.dto.response.UserDetailsResponse;
-import com.jwt.JwtSecurity.model.User;
 
 import java.util.List;
 

@@ -1,18 +1,21 @@
 package com.jwt.JwtSecurity.security;
 
-import com.jwt.JwtSecurity.model.User;
+import com.jwt.JwtSecurity.model.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
-import java.time.Instant;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 @Service
@@ -30,13 +33,19 @@ public class JwtService {
     @Value("${my.app.resetTokenExpirationMs}")
     Integer resetTokenExpirationMs;
 
-    public String generateAccessToken(String email){
+    public String generateAccessToken(String email, Collection<? extends GrantedAuthority> roles){
+
+        Map<String,Object> claims = new HashMap<>();
+        claims.put("roles", roles);
+
         return Jwts.builder()
+                .setClaims(claims)
                 .setSubject(email)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(getSignInKey())
                 .compact();
+
     }
 
     public String generateRefreshToken(String email){

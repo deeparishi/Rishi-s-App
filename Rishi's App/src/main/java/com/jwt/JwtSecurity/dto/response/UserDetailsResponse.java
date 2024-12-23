@@ -2,9 +2,7 @@ package com.jwt.JwtSecurity.dto.response;
 
 import com.jwt.JwtSecurity.dto.record.UserPostsRecord;
 import com.jwt.JwtSecurity.dto.record.UserSkillRecord;
-import com.jwt.JwtSecurity.enums.Role;
-import com.jwt.JwtSecurity.model.UserPosts;
-import com.jwt.JwtSecurity.model.UserSkills;
+import com.jwt.JwtSecurity.enums.Enums;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,7 +25,7 @@ public class UserDetailsResponse implements Serializable {
 
     private String email;
 
-    private Role role;
+    private Enums.Role role;
 
     UserAddressResponse userAddress;
 

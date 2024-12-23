@@ -1,8 +1,7 @@
 package com.jwt.JwtSecurity.controller;
 
 import com.jwt.JwtSecurity.config.ImpersonationContext;
-import com.jwt.JwtSecurity.enums.Role;
-import com.jwt.JwtSecurity.model.User;
+import com.jwt.JwtSecurity.model.user.User;
 import com.jwt.JwtSecurity.repository.UserRepo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -39,10 +38,10 @@ public class ImpersonateController {
 
 
         User currentUser = (User) authentication.getPrincipal();
-        if (!currentUser.getRole().equals(Role.ADMIN)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body("You are not authorized to impersonate users.");
-        }
+//        if (!currentUser.getRole().equals(Enums.Role.ADMIN)) {
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+//                    .body("You are not authorized to impersonate users.");
+//        }
 
         User userToImpersonate = userRepo.findById(userId).
                 orElseThrow(() -> new UsernameNotFoundException("Not found"));

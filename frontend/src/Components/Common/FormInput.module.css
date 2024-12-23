@@ -1,0 +1,21 @@
+.inputGroup {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+  }
+  
+  input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+  }
+  

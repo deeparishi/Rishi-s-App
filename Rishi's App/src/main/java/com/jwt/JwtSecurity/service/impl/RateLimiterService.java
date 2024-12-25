@@ -69,5 +69,41 @@ public class RateLimiterService {
         return allowed;
     }
 
+    public Boolean isAllowedOpt(String key, String timestampKey, int limit, long durationInSeconds) {
+
+        Long count = redisTemplate.opsForValue().increment(key).block();
+
+        if (count == null) return false;
+
+        if (count == 1) {
+            redisTemplate.opsForValue().set(timestampKey, String.valueOf(System.currentTimeMillis()));
+            redisTemplate.expire(key, Duration.ofSeconds(durationInSeconds));
+            redisTemplate.expire(timestampKey, Duration.ofSeconds(durationInSeconds));
+            return true;
+        } else if (count > limit) {
+            // Exceeded rate limit
+            return false;
+        } else {
+            // Check the timestamp
+            String storedTimestamp = redisTemplate.opsForValue().get(timestampKey).block();
+
+            if (storedTimestamp != null) {
+                long currentTime = System.currentTimeMillis();
+                long storedTime = Long.parseLong(storedTimestamp);
+
+                if (currentTime - storedTime > durationInSeconds * 1000) {
+                    // Reset the counter and timestamp
+                    redisTemplate.opsForValue().set(key, "1");
+                    redisTemplate.opsForValue().set(timestampKey, String.valueOf(currentTime));
+                    redisTemplate.expire(key, Duration.ofSeconds(durationInSeconds));
+                    redisTemplate.expire(timestampKey, Duration.ofSeconds(durationInSeconds));
+                    return true;
+                }
+            }
+
+            return true;
+        }
+    }
+
 
 }

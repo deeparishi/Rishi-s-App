@@ -4,7 +4,6 @@ public class Enums {
 
     public enum AuthProvider {
         LOCAL,
-//        google,
         GITHUB,
         GOOGLE
     }

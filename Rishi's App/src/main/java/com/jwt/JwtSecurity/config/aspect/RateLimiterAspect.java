@@ -2,7 +2,7 @@ package com.jwt.JwtSecurity.config.aspect;
 
 import com.jwt.JwtSecurity.config.annotation.RequestRateLimiter;
 import com.jwt.JwtSecurity.exception.LimitReachedException;
-import com.jwt.JwtSecurity.service.RateLimiterService;
+import com.jwt.JwtSecurity.service.impl.RateLimiterService;
 import com.jwt.JwtSecurity.utils.AppMessages;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -25,9 +25,8 @@ public class RateLimiterAspect {
         int limit = requestRateLimiter.limit();
         int duration = requestRateLimiter.duration();
 
-        if (!rateLimiterService.isRateLimitExceeded(endpoint, limit, duration)) {
+        if (!rateLimiterService.isRateLimitExceeded(endpoint, limit, duration))
             throw new LimitReachedException(AppMessages.LIMIT_EXCEEDED);
-        }
 
         return joinPoint.proceed();
     }

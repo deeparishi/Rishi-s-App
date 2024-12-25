@@ -1,4 +1,4 @@
-package com.jwt.JwtSecurity.config.annotation.validator;
+package com.jwt.JwtSecurity.config.aspect;
 
 import com.jwt.JwtSecurity.config.annotation.RequestRateLimiter;
 import com.jwt.JwtSecurity.exception.LimitReachedException;

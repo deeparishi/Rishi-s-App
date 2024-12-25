@@ -65,11 +65,6 @@ public class WebSecurityConfig {
     @Autowired
     IRoleService roleService;
 
-    private static final int MAX_ATTEMPTS = 5;
-    private static final long BLOCK_TIME = 60000; // 1 minute block
-
-    private final Map<String, Integer> failedAttempts = new HashMap<>();
-    private final Map<String, Long> blockedIPs = new HashMap<>();
     private final List<String> WHITELISTED_ENDPOINTS = List.of("/authenticate-user/**",
             "/v2/api-docs",
             "/v3/api-docs",

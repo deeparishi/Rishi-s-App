@@ -5,7 +5,6 @@ import com.jwt.JwtSecurity.config.annotation.RequestRateLimiter;
 import com.jwt.JwtSecurity.dto.request.FriendRequest;
 import com.jwt.JwtSecurity.dto.response.FriendResponse;
 import com.jwt.JwtSecurity.dto.response.GenericResponse;
-import com.jwt.JwtSecurity.service.impl.RateLimiterService;
 import com.jwt.JwtSecurity.service.iservice.IFriendService;
 import com.jwt.JwtSecurity.utils.AppMessages;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +19,6 @@ public class MyFriendsInfoController {
 
     @Autowired
     IFriendService friendService;
-
-    @Autowired
-    RateLimiterService rateLimiterService;
-
 
     @PostMapping("/add-friends")
     public ResponseEntity<GenericResponse<FriendResponse>> addMyFriends(@RequestBody FriendRequest friendRequest) {

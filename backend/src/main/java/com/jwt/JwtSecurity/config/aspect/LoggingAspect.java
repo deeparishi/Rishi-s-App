@@ -122,60 +122,60 @@ public class LoggingAspect {
     }
 
     // Below methods will execute other services except mail service
-    @Pointcut("execution(* com.jwt.JwtSecurity.service.impl.*.*(..)) && !execution(* com.jwt.JwtSecurity.service.impl.MailService.*(..))")
-    public void excludeMailService() {}
-
-    @Before("excludeMailService()")
-    public void logForOtherServices() {
-        log.info("This advice is not applied to MailService");
-    }
-
-
-    // This will work for what are the classes annotated with @Service annotation
-    @Before("@within(org.springframework.stereotype.Service)")
-    public void logForServiceLayer() {
-        log.info("Service annotation classes invoked");
-    }
-
-
-    @Before("within(com.jwt.JwtSecurity.service.impl.*)")
-    public void logWithin() {
-        log.info("Method within a class in the service.impl package was called");
-    }
-
-    // Matches join points where the proxy object is an instance of the specified type
-    @Before("this(com.jwt.JwtSecurity.service.MailService)")
-    public void logThisProxy() {
-        log.info("Proxy is an instance of MailService");
-    }
-
-    // Matches join points where the method arguments are instances of the given type
-    @Before("args(java.lang.String, int)")
-    public void logMethodArgs() {
-        log.info("Method with arguments String and int was called");
-    }
-
-    @Pointcut("")
-    public void withinServicePackage() {}
-
-    // It'll apply the advice to all methods in the services defined in the com.xyz.service package but exclude those in its sub-packages.
-    @Before("within(com.jwt.JwtSecurity.service.*)")
-    public void logWithinServicePackage() {
-        log.info("Method within com.xyz.service package was called.");
-    }
-
-
-    // It'll  apply advice to methods in all classes in the com.xyz.service package, including those in sub-packages.
-    @Before("com.jwt.JwtSecurity.service..")
-    public void logWithinServiceAndSubPackages() {
-        log.info("Method within com.xyz.service or its sub-packages was called.");
-    }
-
-    @After("execution(public * *(..))")
-    public void executesOnAnyPublicMethodWithinProject() {}
-
-    @After("execution(* set*(..))")
-    public void executesIfAnyMethodNameStartsWithSet() {}
+//    @Pointcut("execution(* com.jwt.JwtSecurity.service.impl.*.*(..)) && !execution(* com.jwt.JwtSecurity.service.impl.MailService.*(..))")
+//    public void excludeMailService() {}
+//
+//    @Before("excludeMailService()")
+//    public void logForOtherServices() {
+//        log.info("This advice is not applied to MailService");
+//    }
+//
+//
+//    // This will work for what are the classes annotated with @Service annotation
+//    @Before("@within(org.springframework.stereotype.Service)")
+//    public void logForServiceLayer() {
+//        log.info("Service annotation classes invoked");
+//    }
+//
+//
+//    @Before("within(com.jwt.JwtSecurity.service.impl.*)")
+//    public void logWithin() {
+//        log.info("Method within a class in the service.impl package was called");
+//    }
+//
+//    // Matches join points where the proxy object is an instance of the specified type
+//    @Before("this(com.jwt.JwtSecurity.service.MailService)")
+//    public void logThisProxy() {
+//        log.info("Proxy is an instance of MailService");
+//    }
+//
+//    // Matches join points where the method arguments are instances of the given type
+//    @Before("args(java.lang.String, int)")
+//    public void logMethodArgs() {
+//        log.info("Method with arguments String and int was called");
+//    }
+//
+//    @Pointcut("")
+//    public void withinServicePackage() {}
+//
+//    // It'll apply the advice to all methods in the services defined in the com.xyz.service package but exclude those in its sub-packages.
+//    @Before("within(com.jwt.JwtSecurity.service.*)")
+//    public void logWithinServicePackage() {
+//        log.info("Method within com.xyz.service package was called.");
+//    }
+//
+//
+//    // It'll  apply advice to methods in all classes in the com.xyz.service package, including those in sub-packages.
+//    @Before("com.jwt.JwtSecurity.service..")
+//    public void logWithinServiceAndSubPackages() {
+//        log.info("Method within com.xyz.service or its sub-packages was called.");
+//    }
+//
+//    @After("execution(public * *(..))")
+//    public void executesOnAnyPublicMethodWithinProject() {}
+//
+//    @After("execution(* set*(..))")
+//    public void executesIfAnyMethodNameStartsWithSet() {}
 
 }
 

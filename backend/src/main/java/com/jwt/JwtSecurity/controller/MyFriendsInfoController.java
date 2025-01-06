@@ -40,7 +40,7 @@ public class MyFriendsInfoController {
     }
 
     @GetMapping("/search-friends/{friendId}")
-    @RequestRateLimiter(endpoint = "fetch-all-friends")
+    @RequestRateLimiter(endpoint = "search-friends")
     public ResponseEntity<GenericResponse<FriendResponse>> searchFriends(@PathVariable String friendId) throws JsonProcessingException {
         List<FriendResponse> friendResponse = friendService.searchFriends(friendId);
         return ResponseEntity.ok(GenericResponse.success(AppMessages.SUCCESS_MESSAGE, friendResponse));
